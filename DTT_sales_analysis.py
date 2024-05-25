@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# ## DTT Sale Analysis¶
+# ## DTT Sale Analysis
 
 # ## Objective: imporove customer experience by analysing sales data and increase Revenue.
 
-# In[49]:
+# In[5]:
 
 
 import numpy as np
@@ -14,7 +14,7 @@ from matplotlib import pyplot as plt
 import seaborn as sns
 
 
-# In[50]:
+# In[6]:
 
 
 df = pd.read_csv(r"C:\My GiitHUB\Data Analysis Project\sales\DTT Sales Data.csv", encoding='unicode_escape')
@@ -25,25 +25,25 @@ df.info()
 df.head()
 
 
-# In[51]:
+# In[7]:
 
 
 df.drop(['Status','Unnamed'], axis=1 , inplace=True)
 
 
-# In[52]:
+# In[8]:
 
 
 df.info()
 
 
-# In[53]:
+# In[9]:
 
 
 pd.isnull(df).sum()
 
 
-# In[54]:
+# In[10]:
 
 
 # which rows are having null values extracting that row
@@ -51,22 +51,21 @@ row_with_nulls=df[df.isnull().any(axis=1)]
 print(row_with_nulls.to_string())
 
 
-# In[55]:
+# In[12]:
 
 
 df['Amount']=df.groupby('Product_Category')['Amount'].transform( lambda a : a.fillna(a.mean()))
 
 
-# In[56]:
+# In[13]:
 
 
 df.info()
 
 
-# In[57]:
+# In[15]:
 
 
-# to check the dta if null value filled with mean or not
 chk=df[(df['Cust_name']=='Lakshmi') & (df['Product_ID']=='P00045842')]
 chk
 # as its fload value we moved to round 2
@@ -74,33 +73,33 @@ df['Amount']= df['Amount'].round(2)
 chk
 
 
-# In[58]:
+# In[16]:
 
 
 df.columns
 
 
-# In[59]:
+# In[17]:
 
 
 df=df.rename(columns={'Marital_Status':'Married'})
 df.columns
 
 
-# In[60]:
+# In[18]:
 
 
 # summary of the data
 df.describe()
 
 
-# In[61]:
+# In[19]:
 
 
 df[['Age','Orders','Amount']].describe()
 
 
-# In[62]:
+# In[20]:
 
 
 # define function to make it categories in terms of age
@@ -121,14 +120,13 @@ def func(age):
         return '60+'
 df['Age_group']=df['Age'].apply(func)
 print(df)
-    
 
 
 # ## Exploratory_data Analysis
 
 # ## Data Analysis  based on Gender
 
-# In[63]:
+# In[21]:
 
 
 ax=sns.countplot(x='Gender', data=df, color='g')
@@ -137,7 +135,7 @@ for bars in  ax.containers:
 ax.patches[0].set_facecolor('red')
 
 
-# In[64]:
+# In[22]:
 
 
 total_amount_of_orders= df.groupby('Gender')['Amount'].sum().reset_index(name='sum_of_total')
@@ -149,9 +147,9 @@ res.patches[1].set_facecolor('red')
 
 # *from above graphs most of the buyers are female and purchasing power of female is also female*
 
-#  ## Data Analysis based on Age group
+# ## Data Analysis based on Age group
 
-# In[65]:
+# In[26]:
 
 
 ax=sns.countplot(x='Age_group', data=df , hue='Gender')
@@ -159,7 +157,7 @@ for bars in ax.containers:
     ax.bar_label(bars)
 
 
-# In[66]:
+# In[27]:
 
 
 purchasing_power=df.groupby('Age_group') ['Amount'].sum().reset_index(name='total_amount_by_age')
@@ -172,7 +170,7 @@ for i in ax.containers:
 
 # *from above graphs most of the buyers are of 30-40 years of age group*
 
-# In[67]:
+# In[29]:
 
 
 df.columns
@@ -180,7 +178,7 @@ df.columns
 
 # ##  Data Analysis based on married
 
-# In[68]:
+# In[31]:
 
 
 ax2= sns.countplot(x='Married',data=df , hue='Gender')
@@ -188,14 +186,14 @@ for i in ax2.containers:
     ax2.bar_label(i)
 
 
-# In[69]:
+# In[32]:
 
 
 ## total count of orders   w.r.t married column:
 sns.countplot(data=df,x='Married', palette='muted',hue='Gender')
 
 
-# In[70]:
+# In[35]:
 
 
 ## total Amount of order based on married :
@@ -206,9 +204,7 @@ sns.barplot(data=total_amount_by_married,x='Married' , y='Amount',palette='muted
 
 # *from the above groups we can see unmarried women people are the most buyers and spends more amounts as well !*
 
-# # State
-
-# In[73]:
+# In[36]:
 
 
 # total of orders in top 10 state
@@ -218,8 +214,7 @@ sns.set(rc={'figure.figsize':(16,5)})
 sns.barplot(data=order_by_st, x='State', y='Orders', palette='muted')
 
 
-
-# In[77]:
+# In[37]:
 
 
 # Total amount of orders in top 10 states
@@ -229,12 +224,11 @@ sns.set(rc={'figure.figsize': (16, 5)})
 sns.barplot(data=order_by_st, x='State', y='Amount', palette='muted')
 
 
-
 # *here we can see that if the total  orders are hign in kerala but sum of amount is less its not present in  top 10*
 
-# ## occupation
+# # occupation
 
-# In[78]:
+# In[38]:
 
 
 ## count of occupation for every buyer
@@ -245,7 +239,7 @@ for i in ax.containers:
     ax.bar_label(i)
 
 
-# In[82]:
+# In[39]:
 
 
 ## sum  of  amount of every  occupation for every buyer
@@ -271,7 +265,7 @@ plt.show()
 
 # ## product_category
 
-# In[83]:
+# In[41]:
 
 
 ## count of Product_Category for every buyer
@@ -282,7 +276,7 @@ for i in ax.containers:
     ax.bar_label(i)
 
 
-# In[85]:
+# In[42]:
 
 
 ## sum of amount based on product_category
@@ -303,8 +297,4 @@ for p in ax.patches:
 
 # *Married women with age group of 30-40 from UP,Maharastra, Karnataka are working in IT, helathCare,aviation are mostly buying food, clothing,Footwear Category!*
 
-# In[ ]:
-
-
-## Divan TT
-
+# ##### Divan TT 
